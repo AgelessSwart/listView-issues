@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, Text, Image, TouchableHighlight } from 'react-native';
 import PropTypes from 'prop-types';
 import NewGoodsItem from './NewGoodsItem';
@@ -17,25 +17,35 @@ type Props = {
   name: String,
 };
 
-_openDialog = (message, props) => {
-  if (!message.url) return;
-  let originUrl = message.url;
-  // if Base64, decode
-  if (!isInfoHash(message.url) && /^[a-zA-Z0-9=+/]+$/.test(message.url)) {
-    originUrl = base64.decode(message.url);
-  }
-  // if hash, add magnet prefix
-  if (isInfoHash(originUrl)) {
-    originUrl = infoHashToMagnet(originUrl);
-  }
-  showDialog.show(new Video(message.name, Number(message.size), originUrl, -1), props.navigation);
-}
 
-const NewGoodsView = (props: Props) => {
-  const { itemDatas, navigation, name, tab } = props;
+export default class NewGoodsView extends Component<Props> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      itemData: {}
+    }
+  }
+
+
+  _openDialog = (message, props) => {
+    if (!message.url) return;
+    let originUrl = message.url;
+    // if Base64, decode
+    if (!isInfoHash(message.url) && /^[a-zA-Z0-9=+/]+$/.test(message.url)) {
+      originUrl = base64.decode(message.url);
+    }
+    // if hash, add magnet prefix
+    if (isInfoHash(originUrl)) {
+      originUrl = infoHashToMagnet(originUrl);
+    }
+    showDialog.show(new Video(message.name, Number(message.size), originUrl, -1), props.navigation);
+  }
+
+render(){
+  const { itemDatas, navigation, name, tab } = this.props;
   
-  console.log("itemDatas")
-  console.log(itemDatas)
+  // console.log("itemDatas")
+  // console.log(itemDatas)
   // console.log(tab)
   // console.log(name)
   if(itemDatas.length != 0){
@@ -55,7 +65,7 @@ const NewGoodsView = (props: Props) => {
                 url: value.durl,
                 size: Number(value.filesize)
               }
-              this._openDialog(video, props)
+              this._openDialog(video, this.props)
             }}
             items={value}
           />
@@ -74,7 +84,8 @@ const NewGoodsView = (props: Props) => {
       <Loading />
     )
   }
-};
+}
+}
 
 
 const styles = StyleSheet.create({
@@ -120,4 +131,3 @@ const styles = StyleSheet.create({
   }
 });
 
-export default NewGoodsView;

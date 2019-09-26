@@ -40,8 +40,8 @@ export default class ItemSwiper extends Component<Props> {
   // changeFun(classList[obj.i].category.id)
 
   componentDidMount() {
-    console.log("componentDidMount")
-    console.log(this.props)
+    // console.log("componentDidMount")
+    // console.log(this.props)
     this.classList = this.props.classList;
     // this.forceUpdate();
   }

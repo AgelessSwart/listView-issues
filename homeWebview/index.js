@@ -204,8 +204,6 @@ class HomeWebView extends Component<Props, State> {
     })
     console.log("initList:"+this.typeid)
     httpPost.httpPost('https://werr.wakaka111.com/v6/movie/list', { tab: this.typeid }).then( (res) => {
-      console.log("initListData")
-      console.log(res)
       // this.setState({
       //   listData: res
       // })
@@ -444,8 +442,8 @@ class HomeWebView extends Component<Props, State> {
 
   _classbox = (banner, is) => {
     const { listData } = this.state;
-    console.log("listdata1")
-    console.log(listData)
+    // console.log("listdata1")
+    // console.log(listData)
     // await
     if(!is){
       return (
@@ -528,10 +526,10 @@ class HomeWebView extends Component<Props, State> {
   
   render() {
     const { classList, listData } = this.state;
-    console.log("classList")
-    console.log(classList)
-    console.log(listData)
-    console.log(this.classList)
+    // console.log("classList")
+    // console.log(classList)
+    // console.log(listData)
+    // console.log(this.classList)
     if(classList.length != 0){
       return (
         <PageContainer>

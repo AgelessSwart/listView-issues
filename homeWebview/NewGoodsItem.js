@@ -18,58 +18,58 @@ type State = {
 
 
 
-const img2base = (items) => {
-  return new Promise((resolve, reject) => {
+export default class NewGoodsItem extends Component<Props> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      itemData: {}
+    }
+  }
 
-    // console.log("items")
+
+
+  async componentDidMount() {
+    let { items } = this.props;
+    // console.log("itemsss")
     // console.log(items)
-    return decodeImg.decodeImg(items.img).then( (res) => {
-      // console.log("itemsres")
-      // console.log(res)
-      items.img = res
-      // this.setState({
-      //   itemData: items
-      // })
-      // this.forceUpdate();
-      // this.setState(Object.assign({}, this.state, {
-      //   itemData: items
-      // }));
-      return resolve(items)
-    })
-  })
-}
+    if(items.img.indexOf('http') != -1){
 
-// export default class NewGoodsItem extends Component<Props> {
-//   constructor(props: Props) {
-//     super(props);
-//     this.itemData = {}
-//   }
+      await decodeImg.decodeImg(items.img).then( (res) => {
+        // console.log("itemsres")
+        // console.log(res)
+        items.img = res
+        // this.setState({
+        //   itemData: items
+        // })
+        // this.forceUpdate();
+        this.setState(Object.assign({}, this.state, {
+          itemData: items
+        }));
+      })
+    }else if(items.img.indexOf('data:image/') != -1){
+      this.setState(Object.assign({}, this.state, {
+        itemData: items
+      }));
+    }
+  }
 
-const NewGoodsItem = (props: Props) => {
-    const { onPress } = props;
-    const { items } = props;
-    return img2base(items).then( (itemData) => {
-      console.log('items.name')
-      console.log(itemData)
-      if(itemData.image){
-        return (
-          <TouchableHighlight
-            underlayColor={"#FEFEFE"}
-            onPress={() => onPress && onPress()}>
-            <View style={styles.item}>
-              <Image source={{ uri: itemData.img }} style={styles.image} />
-              <Text style={styles.name}>{itemData.name}</Text>
-            </View>
-          </TouchableHighlight>
-        )
-      }else{
-        return(
-          <Text>加载中</Text>
-        )
-      }
-    })
+  render() {
+    const { onPress, items } = this.props;
+    const { itemData } = this.state;
+    console.log('items.name')
+    console.log(itemData)
+    return (
+      <TouchableHighlight
+        underlayColor={"#FEFEFE"}
+        onPress={() => onPress && onPress()}>
+        <View style={styles.item}>
+          <Image source={{ uri: itemData.img }} style={styles.image} />
+          <Text style={styles.name}>{itemData.name}</Text>
+        </View>
+      </TouchableHighlight>
+    )
+  }
 };
-
 
 
 const styles = StyleSheet.create({
@@ -93,6 +93,3 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   }
 });
-
-
-export default NewGoodsItem;
